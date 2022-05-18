@@ -15,23 +15,22 @@ const defaultFields = {
 const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFields);
   const { email, password } = formFields;
+
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setFormFields({ ...formFields, [name]: value });
   };
   const handleSignInWithGoogle = async () => {
     const { user } = await signInWithGooglePopup();
-    console.log(user);
     await createUserDocumentFromAuth(user);
   };
   const handleSignInWithLoginAndPassword = async (e) => {
     e.preventDefault();
     try {
-      const response = await signInWithEmailAndPasswordFirebase(
+      const { user } = await signInWithEmailAndPasswordFirebase(
         formFields.email,
         formFields.password
       );
-      console.log(response);
 
       resetFormFields();
     } catch (error) {
