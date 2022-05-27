@@ -4,7 +4,7 @@ import {
   signInWithGooglePopup,
   createUserDocumentFromAuth,
 } from '../../utils/firebase/firebase.utils';
-import Button from '../button/button.component';
+import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
 import { FormInput } from '../form-input/form-input.component';
 import './sign-in-form.styles.scss';
 
@@ -76,7 +76,7 @@ const SignInForm = () => {
           <Button
             type="button"
             onClick={handleSignInWithGoogle}
-            buttonType="google"
+            buttonType={BUTTON_TYPE_CLASSES.google}
           >
             Google Sign In
           </Button>
