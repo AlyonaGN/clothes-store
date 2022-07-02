@@ -11,8 +11,9 @@ import {
 } from './navigation.styles';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../../store/user/user.selector';
-import { toggleIsOpen } from '../../store/cart/cart.action';
+
 import { selectIsCartOpen } from '../../store/cart/cart.selector';
+import { toggleIsOpen } from '../../store/cart/cartSlice';
 
 const Navigation = () => {
   const currentUser = useSelector(selectCurrentUser);

@@ -10,8 +10,8 @@ import Shop from './routes/shop/shop.component';
 import { BASE_ROUTES } from './routes/routes';
 import Authentication from './routes/authentication/authentication.component';
 import Checkout from './routes/checkout/checkout.component';
-import { setCurrentUser } from './store/user/user.action';
 import { useDispatch } from 'react-redux';
+import { setCurrentUser } from './store/user/userSlice';
 
 const App = () => {
   const dispatch = useDispatch();

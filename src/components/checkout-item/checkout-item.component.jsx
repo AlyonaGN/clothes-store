@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { selectCartItems } from '../../store/cart/cart.selector';
 import {
   addItemToCart,
   decreaseQuantityOfItemInCart,
   removeItemFromCart,
-} from '../../store/cart/cart.action';
-import { selectCartItems } from '../../store/cart/cart.selector';
+} from '../../store/cart/cartSlice';
 import {
   CheckoutItemContainer,
   ImageContainer,
