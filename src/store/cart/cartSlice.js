@@ -14,7 +14,7 @@ const addCartItem = (cartItems, itemToAdd) => {
   }
   const itemWithIncrementedQuantity = {
     ...cartItems[indexOfItemToAdd],
-    quantity: ++cartItems[indexOfItemToAdd].quantity,
+    quantity: cartItems[indexOfItemToAdd].quantity + 1,
   };
   const updatedItems = [...cartItems];
   updatedItems[indexOfItemToAdd] = itemWithIncrementedQuantity;
@@ -30,7 +30,7 @@ const decreaseProductQuantity = (cartItems, itemToDecrease) => {
     return removeItem(cartItems, itemToDecrease);
   return cartItems.map((item) =>
     item.id === itemToDecrease.id
-      ? { ...item, quantity: --item.quantity }
+      ? { ...item, quantity: item.quantity - 1 }
       : item
   );
 };
