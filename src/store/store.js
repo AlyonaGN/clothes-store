@@ -6,10 +6,9 @@ import {
   isPlain,
 } from '@reduxjs/toolkit';
 import { rootReducer } from './rootReducer';
+import logger from 'redux-logger';
 
-/* const middlewares = [logger];
 
-const composedEnhancers = compose(applyMiddleware(...middlewares)); */
 
 const isSerializable = (value) => Iterable.isIterable(value) || isPlain(value);
 
@@ -17,11 +16,13 @@ const getEntries = (value) =>
   Iterable.isIterable(value) ? value.entries() : Object.entries(value);
 
 const serializableMiddleware = createSerializableStateInvariantMiddleware({
-  isSerializable,
-  getEntries,
-});
+    isSerializable,
+    getEntries,
+  });
+
+const middlewares = [logger];
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: [serializableMiddleware],
+  middleware: middlewares,
 });
