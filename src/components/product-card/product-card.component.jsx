@@ -9,6 +9,8 @@ import {
   Price,
 } from './product-card.styles';
 
+const BUTTON_TEXT = "Add to cart"
+
 export const ProductCard = ({ product }) => {
   const { name, price, imageUrl } = product;
   const dispatch = useDispatch();
@@ -26,7 +28,7 @@ export const ProductCard = ({ product }) => {
         buttonType={BUTTON_TYPE_CLASSES.inverted}
         onClick={addProductToCart}
       >
-        Add to card
+        {BUTTON_TEXT}
       </Button>
     </ProductCartContainer>
   );

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isOpen: false,
-  cartItems: [],
+  cartItems: []
 };
 
 const addCartItem = (cartItems, itemToAdd) => {
@@ -34,6 +34,7 @@ const decreaseProductQuantity = (cartItems, itemToDecrease) => {
       : item
   );
 };
+
 
 const cartSlice = createSlice({
   name: 'cart',
