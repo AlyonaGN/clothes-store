@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addItemToCart } from '../../store/cart/cart.action';
 import { selectCartItems } from '../../store/cart/cart.selector';
+import { addItemToCart } from '../../store/cart/cartSlice';
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
 import {
   ProductCartContainer,
@@ -8,6 +8,8 @@ import {
   Name,
   Price,
 } from './product-card.styles';
+
+const BUTTON_TEXT = "Add to cart"
 
 export const ProductCard = ({ product }) => {
   const { name, price, imageUrl } = product;
@@ -26,7 +28,7 @@ export const ProductCard = ({ product }) => {
         buttonType={BUTTON_TYPE_CLASSES.inverted}
         onClick={addProductToCart}
       >
-        Add to card
+        {BUTTON_TEXT}
       </Button>
     </ProductCartContainer>
   );
