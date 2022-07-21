@@ -8,4 +8,4 @@ const CATEGORIES_THUNKS = {
 export const fetchCategories = createAsyncThunk(CATEGORIES_THUNKS.fetch, async () => {
     const categories = await getCollectionsAndDocuments('categories');
     return categories;
-  })
+})
