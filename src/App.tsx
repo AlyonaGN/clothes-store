@@ -15,16 +15,20 @@ import { setCurrentUser } from './store/user/userSlice';
 
 const App = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChangedListener((user) => {
+    const unsubscribe = onAuthStateChangedListener(async (user) => {
+      let userSnapshot = null
       if (user) {
-        createUserDocumentFromAuth(user);
+        userSnapshot = await createUserDocumentFromAuth(user);
       }
-      dispatch(setCurrentUser(user?.toJSON()));
-      console.log(user);
+
+      dispatch(setCurrentUser(userSnapshot ? userSnapshot.data() : null));
     });
+
     return unsubscribe;
   }, []);
+  
   return (
     <Routes>
       <Route path={BASE_ROUTES.MAIN} element={<Navigation />}>

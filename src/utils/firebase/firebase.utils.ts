@@ -8,6 +8,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  User as UserFirebase,
+  NextOrObserver
 } from 'firebase/auth';
 import {
   getFirestore,
@@ -18,7 +20,10 @@ import {
   writeBatch,
   query,
   getDocs,
+  QueryDocumentSnapshot
 } from 'firebase/firestore';
+import { Category } from '../../store/categories/categoriesSlice';
+import { User } from '../../store/user/userSlice';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAM1_X7HGd9skEZclFgitLNlSpq3IfR1xE',
@@ -29,7 +34,7 @@ const firebaseConfig = {
   appId: '1:525859999027:web:9716c6fc1e1d111f2f4246',
 };
 
-const firebaseApp = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 const provider = new GoogleAuthProvider();
 
 provider.setCustomParameters({
@@ -39,14 +44,15 @@ export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, provider);
-export const signInWithEmailAndPasswordFirebase = (email, password) => {
-  if (!email || !password) return;
-  return signInWithEmailAndPassword(auth, email, password);
-};
+
 const db = getFirestore();
-export const addCollectionAndDocuments = async (
-  collectionKey,
-  objectsToAdd
+
+export type ObjectToAdd = {
+  title: string
+}
+export const addCollectionAndDocuments = async <T extends ObjectToAdd> (
+  collectionKey: string,
+  objectsToAdd: T[]
 ) => {
   const collectionRef = collection(db, collectionKey);
   const batch = writeBatch(db);
@@ -58,14 +64,16 @@ export const addCollectionAndDocuments = async (
 
   await batch.commit();
 };
+
 export const getCollectionsAndDocuments = async () => {
   const collectionRef = collection(db, 'categories');
   const q = query(collectionRef);
   const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
+  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data() as Category);
 };
+
 export const createUserDocumentFromAuth = async (
-  userAuth,
+  userAuth: UserFirebase,
   additionalInfo = {}
 ) => {
   if (!userAuth) return;
@@ -83,7 +91,7 @@ export const createUserDocumentFromAuth = async (
         createdAt,
         ...additionalInfo,
       });
-    } catch (e) {
+    } catch (e: any) {
       if (e.code === 'auth/email-already-in-use') {
         alert('cannot create user: user with this email is already registered');
       } else {
@@ -91,15 +99,20 @@ export const createUserDocumentFromAuth = async (
       }
     }
   }
-  return userDocRef;
+  return userSnapshot as QueryDocumentSnapshot<User>;
 };
 
-export const createAuthUserWithEmailAndPassword = async (email, password) => {
+export const createAuthUserWithEmailAndPassword = async (email: string, password: string) => {
   if (!email || !password) return;
   return await createUserWithEmailAndPassword(auth, email, password);
 };
 
-export const onAuthStateChangedListener = (callback) =>
+export const onAuthStateChangedListener = (callback: NextOrObserver<UserFirebase>) =>
   onAuthStateChanged(auth, callback);
+
+export const signInWithEmailAndPasswordFirebase = (email: string, password: string) => {
+    if (!email || !password) return;
+    return signInWithEmailAndPassword(auth, email, password);
+};
 
 export const signOutUser = async () => await signOut(auth);

@@ -1,7 +1,38 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, SerializedError } from '@reduxjs/toolkit';
 import { fetchCategories } from './categories.thunk';
+import { Key } from 'react';
 
-const initialState = {
+
+export type Product = {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+}
+
+export type Category = {
+  title: string;
+  items: Product[]
+}
+
+interface CategoriesSlice {
+  categories: Category[],
+    isLoading: boolean,
+    error: SerializedError | null
+}
+
+export type CategoriesMap = {
+  [key: string]: Product[]
+}
+
+export type CategoryDirectory = {
+  id: Key,
+  title: string,
+  imageUrl: string,
+  route: string,
+}
+
+const initialState: CategoriesSlice = {
   categories: [],
   isLoading: false,
   error: null
@@ -27,5 +58,4 @@ const categoriesSlice = createSlice({
   },
 });
 
-export const { setCategories } = categoriesSlice.actions;
 export const categoriesReducer = categoriesSlice.reducer;
