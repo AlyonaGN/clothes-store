@@ -5,7 +5,6 @@ import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, 
 import { rootReducer } from './rootReducer';
 import logger from 'redux-logger';
 import storage from 'redux-persist/lib/storage';
-import { useDispatch } from 'react-redux';
 
 const persistConfig = {
   key: 'root',
