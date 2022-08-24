@@ -1,7 +1,8 @@
-import { useSelector } from 'react-redux';
+import { FC } from 'react';
 import { selectCartItems } from '../../store/cart/cart.selector';
 import { addItemToCart } from '../../store/cart/cartSlice';
-import { useAppDispatch } from '../../store/hooks';
+import { Product } from '../../store/categories/categoriesSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
 import {
   ProductCartContainer,
@@ -12,11 +13,14 @@ import {
 
 const BUTTON_TEXT = "Add to cart"
 
-export const ProductCard = ({ product }) => {
+type ProductCardProps = {
+  product: Product
+}
+
+export const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const { name, price, imageUrl } = product;
   const dispatch = useAppDispatch();
-  const cartItems = useSelector(selectCartItems);
-  const addProductToCart = () => dispatch(addItemToCart(cartItems, product));
+  const addProductToCart = () => dispatch(addItemToCart(product));
 
   return (
     <ProductCartContainer>

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { FirebaseError } from 'firebase/app';
+import { ChangeEventHandler, FormEventHandler, useState } from 'react';
 import {
   signInWithEmailAndPasswordFirebase,
   signInWithGooglePopup,
@@ -6,7 +7,8 @@ import {
 } from '../../utils/firebase/firebase.utils';
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
 import { FormInput } from '../form-input/form-input.component';
-import './sign-in-form.styles.scss';
+import { ButtonsContainer, SignInContainer, SignInTitle } from './sign-in-form.styles';
+import './sign-in-form.styles.tsx';
 
 const defaultFields = {
   email: '',
@@ -16,7 +18,7 @@ const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFields);
   const { email, password } = formFields;
 
-  const onInputChange = (e) => {
+  const onInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { name, value } = e.target;
     setFormFields({ ...formFields, [name]: value });
   };
@@ -24,25 +26,26 @@ const SignInForm = () => {
     const { user } = await signInWithGooglePopup();
     await createUserDocumentFromAuth(user);
   };
-  const handleSignInWithLoginAndPassword = async (e) => {
+  const handleSignInWithLoginAndPassword: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     try {
-      const { user } = await signInWithEmailAndPasswordFirebase(
-        formFields.email,
-        formFields.password
-      );
-
+      await signInAuthUserWithEmailAndPassword(email, password);
       resetFormFields();
     } catch (error) {
-      switch (error.code) {
-        case 'auth/wrong-password':
-          alert('incorrect password for email');
-          break;
-        case 'auth/user-not-found':
-          alert('no user associated with this email');
-          break;
-        default:
-          console.log(error);
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case 'auth/wrong-password':
+            alert('incorrect password for email');
+            break;
+          case 'auth/user-not-found':
+            alert('no user associated with this email');
+            break;
+          default:
+            console.log(error);
+        }
+      }
+      else {
+        console.log(error);
       }
     }
   };
@@ -50,8 +53,8 @@ const SignInForm = () => {
     setFormFields(defaultFields);
   };
   return (
-    <div className="sign-in-container">
-      <h2>I already have an account</h2>
+    <SignInContainer className="sign-in-container">
+      <SignInTitle>I already have an account</SignInTitle>
       <span>Sign up with your email and password</span>
       <form onSubmit={handleSignInWithLoginAndPassword}>
         <FormInput
@@ -71,7 +74,7 @@ const SignInForm = () => {
           name="password"
           required
         />
-        <div className="buttons-container">
+        <ButtonsContainer className="buttons-container">
           <Button type="submit">Sign In</Button>
           <Button
             type="button"
@@ -80,10 +83,14 @@ const SignInForm = () => {
           >
             Google Sign In
           </Button>
-        </div>
+        </ButtonsContainer>
       </form>
-    </div>
+    </SignInContainer>
   );
 };
 
 export default SignInForm;
+function signInAuthUserWithEmailAndPassword(email: string, password: string) {
+  throw new Error('Function not implemented.');
+}
+
