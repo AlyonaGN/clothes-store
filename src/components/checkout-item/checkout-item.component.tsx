@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import {
   addItemToCart,
-  CartItem,
+  CartItemType,
   decreaseQuantityOfItemInCart,
   removeItemFromCart,
 } from '../../store/cart/cartSlice';
@@ -17,7 +17,7 @@ import {
 } from './checkout-item.styles';
 
 type CheckoutItemProps = {
-  cartItem: CartItem
+  cartItem: CartItemType
 }
 
 const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
