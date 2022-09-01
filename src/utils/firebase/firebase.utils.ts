@@ -79,7 +79,6 @@ export const createUserDocumentFromAuth = async (
   if (!userAuth) return;
   const userDocRef = doc(db, 'users', userAuth.uid);
   const userSnapshot = await getDoc(userDocRef);
-  console.log('snapshot', userSnapshot)
 
   if (!userSnapshot.exists()) {
     const { displayName, email } = userAuth;
@@ -100,7 +99,13 @@ export const createUserDocumentFromAuth = async (
       }
     }
   }
-  return userSnapshot as QueryDocumentSnapshot<User>;
+  const userData = userSnapshot.data();
+  const formattedUserData: User = {
+    createdAt: userData?.createdAt.seconds,
+    displayName: userData?.displayName,
+    email: userData?.email
+  }
+  return formattedUserData;
 };
 
 export const createAuthUserWithEmailAndPassword = async (email: string, password: string) => {

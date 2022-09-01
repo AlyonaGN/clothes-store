@@ -18,12 +18,12 @@ const App = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener(async (user) => {
-      let userSnapshot = null
       if (user) {
-        userSnapshot = await createUserDocumentFromAuth(user);
+        const userData = await createUserDocumentFromAuth(user);
+        if (userData) {
+          dispatch(setCurrentUser(userData))
+        }
       }
-
-      dispatch(setCurrentUser(userSnapshot ? userSnapshot.data() : null));
     });
 
     return unsubscribe;
