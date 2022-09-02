@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { BASE_ROUTES } from '../../routes/routes'
 import { selectCartItems } from '../../store/cart/cart.selector'
 import { toggleIsOpen } from '../../store/cart/cartSlice'
 import { useAppDispatch } from '../../store/hooks'
@@ -14,7 +15,7 @@ export const CartDropdown = () => {
     const navigate = useNavigate()
 
     const goToCheckoutHandler = () => {
-        navigate('/checkout')
+        navigate(BASE_ROUTES.CHECKOUT)
         dispatch(toggleIsOpen())
     }
 

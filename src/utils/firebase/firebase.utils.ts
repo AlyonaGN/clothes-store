@@ -1,124 +1,129 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp } from 'firebase/app'
 import {
-  getAuth,
-  signInWithRedirect,
-  signInWithPopup,
-  GoogleAuthProvider,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-  User as UserFirebase,
-  NextOrObserver
-} from 'firebase/auth';
+    getAuth,
+    signInWithRedirect,
+    signInWithPopup,
+    GoogleAuthProvider,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+    User as UserFirebase,
+    NextOrObserver
+} from 'firebase/auth'
 import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
-  collection,
-  writeBatch,
-  query,
-  getDocs,
-  QueryDocumentSnapshot
-} from 'firebase/firestore';
-import { Category } from '../../store/categories/categoriesSlice';
-import { User } from '../../store/user/userSlice';
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    collection,
+    writeBatch,
+    query,
+    getDocs,
+    QueryDocumentSnapshot
+} from 'firebase/firestore'
+import { Category } from '../../store/categories/categoriesSlice'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAM1_X7HGd9skEZclFgitLNlSpq3IfR1xE',
-  authDomain: 'crwn-clothing-db-7bd27.firebaseapp.com',
-  projectId: 'crwn-clothing-db-7bd27',
-  storageBucket: 'crwn-clothing-db-7bd27.appspot.com',
-  messagingSenderId: '525859999027',
-  appId: '1:525859999027:web:9716c6fc1e1d111f2f4246',
-};
+    apiKey: 'AIzaSyAM1_X7HGd9skEZclFgitLNlSpq3IfR1xE',
+    authDomain: 'crwn-clothing-db-7bd27.firebaseapp.com',
+    projectId: 'crwn-clothing-db-7bd27',
+    storageBucket: 'crwn-clothing-db-7bd27.appspot.com',
+    messagingSenderId: '525859999027',
+    appId: '1:525859999027:web:9716c6fc1e1d111f2f4246'
+}
 
-initializeApp(firebaseConfig);
-const provider = new GoogleAuthProvider();
+initializeApp(firebaseConfig)
+const provider = new GoogleAuthProvider()
 
 provider.setCustomParameters({
-  prompt: 'select_account',
-});
-export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
-export const signInWithGoogleRedirect = () =>
-  signInWithRedirect(auth, provider);
+    prompt: 'select_account'
+})
+export const auth = getAuth()
+export const signInWithGooglePopup = () => signInWithPopup(auth, provider)
+export const signInWithGoogleRedirect = () => signInWithRedirect(auth, provider)
 
-const db = getFirestore();
+const db = getFirestore()
 
 export type ObjectToAdd = {
-  title: string
+    title: string
 }
-export const addCollectionAndDocuments = async <T extends ObjectToAdd> (
-  collectionKey: string,
-  objectsToAdd: T[]
-) => {
-  const collectionRef = collection(db, collectionKey);
-  const batch = writeBatch(db);
+export const addCollectionAndDocuments = async <T extends ObjectToAdd>(collectionKey: string, objectsToAdd: T[]) => {
+    const collectionRef = collection(db, collectionKey)
+    const batch = writeBatch(db)
 
-  objectsToAdd.forEach((object) => {
-    const docRef = doc(collectionRef, object.title.toLowerCase());
-    batch.set(docRef, object);
-  });
+    objectsToAdd.forEach(object => {
+        const docRef = doc(collectionRef, object.title.toLowerCase())
+        batch.set(docRef, object)
+    })
 
-  await batch.commit();
-};
+    await batch.commit()
+}
 
 export const getCollectionsAndDocuments = async () => {
-  const collectionRef = collection(db, 'categories');
-  const q = query(collectionRef);
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data() as Category);
-};
+    const collectionRef = collection(db, 'categories')
+    const q = query(collectionRef)
+    const querySnapshot = await getDocs(q)
+    return querySnapshot.docs.map(docSnapshot => docSnapshot.data() as Category)
+}
+
+type AdditionalInformation = {
+    displayName?: string
+}
+
+export type UserData = {
+    createdAt: { seconds: number; nanoseconds: number }
+    displayName: string
+    email: string
+}
+
+export const retrieveDataFromUserSnapshot = (snapshot: QueryDocumentSnapshot<UserData>) => {
+    const data = snapshot.data()
+    console.log('data', data)
+    const formatedUserData = { ...data, createdAt: data.createdAt.seconds }
+    return formatedUserData
+}
 
 export const createUserDocumentFromAuth = async (
-  userAuth: UserFirebase,
-  additionalInfo = {}
-) => {
-  if (!userAuth) return;
-  const userDocRef = doc(db, 'users', userAuth.uid);
-  const userSnapshot = await getDoc(userDocRef);
+    userAuth: UserFirebase,
+    additionalInfo: AdditionalInformation = {}
+): Promise<void | QueryDocumentSnapshot<UserData>> => {
+    if (!userAuth) return
+    const userDocRef = doc(db, 'users', userAuth.uid)
+    const userSnapshot = await getDoc(userDocRef)
 
-  if (!userSnapshot.exists()) {
-    const { displayName, email } = userAuth;
-    const createdAt = new Date();
+    if (!userSnapshot.exists()) {
+        const { displayName, email } = userAuth
+        const createdAt = new Date()
 
-    try {
-      await setDoc(userDocRef, {
-        displayName,
-        email,
-        createdAt,
-        ...additionalInfo,
-      });
-    } catch (e: any) {
-      if (e.code === 'auth/email-already-in-use') {
-        alert('cannot create user: user with this email is already registered');
-      } else {
-        console.log('error creating a user:', e.message);
-      }
+        try {
+            await setDoc(userDocRef, {
+                displayName,
+                email,
+                createdAt,
+                ...additionalInfo
+            })
+        } catch (e: any) {
+            if (e.code === 'auth/email-already-in-use') {
+                alert('cannot create user: user with this email is already registered')
+            } else {
+                console.log('error creating a user:', e.message)
+            }
+        }
     }
-  }
-  const userData = userSnapshot.data();
-  const formattedUserData: User = {
-    createdAt: userData?.createdAt.seconds,
-    displayName: userData?.displayName,
-    email: userData?.email
-  }
-  return formattedUserData;
-};
+    return userSnapshot as QueryDocumentSnapshot<UserData>
+}
 
 export const createAuthUserWithEmailAndPassword = async (email: string, password: string) => {
-  if (!email || !password) return;
-  return await createUserWithEmailAndPassword(auth, email, password);
-};
+    if (!email || !password) return
+    return await createUserWithEmailAndPassword(auth, email, password)
+}
 
-export const onAuthStateChangedListener = (callback: NextOrObserver<UserFirebase>) =>
-  onAuthStateChanged(auth, callback);
+export const onAuthStateChangedListener = (callback: NextOrObserver<UserFirebase>) => onAuthStateChanged(auth, callback)
 
 export const signInWithEmailAndPasswordFirebase = (email: string, password: string) => {
-    if (!email || !password) return;
-    return signInWithEmailAndPassword(auth, email, password);
-};
+    if (!email || !password) return
+    return signInWithEmailAndPassword(auth, email, password)
+}
 
-export const signOutUser = async () => await signOut(auth);
+export const signOutUser = async () => await signOut(auth)
