@@ -5,11 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { BASE_ROUTES } from '../../routes/routes'
 import { useAppDispatch } from '../../store/hooks'
 import { setCurrentUser } from '../../store/user/userSlice'
-import {
-    createAuthUserWithEmailAndPassword,
-    createUserDocumentFromAuth,
-    retrieveDataFromUserSnapshot
-} from '../../utils/firebase/firebase.utils'
+import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils'
 import Button from '../button/button.component'
 import { FormInput } from '../form-input/form-input.component'
 import { SignUpContainer, SignUpTitle } from './sign-up-form.styles'
@@ -43,13 +39,11 @@ const SignUpForm = () => {
             const userCredential = await createAuthUserWithEmailAndPassword(email, password)
 
             if (userCredential) {
-                const userSnapshot = await createUserDocumentFromAuth(userCredential.user, {
+                const userData = await createUserDocumentFromAuth(userCredential.user, {
                     displayName
                 })
-                console.log('u', userSnapshot)
-                if (userSnapshot) {
-                    const user = retrieveDataFromUserSnapshot(userSnapshot)
-                    dispatch(setCurrentUser(user))
+                if (userData) {
+                    dispatch(setCurrentUser(userData))
                 }
             }
             navigate(BASE_ROUTES.MAIN)

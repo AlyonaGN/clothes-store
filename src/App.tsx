@@ -1,10 +1,6 @@
 import { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import {
-    createUserDocumentFromAuth,
-    onAuthStateChangedListener,
-    retrieveDataFromUserSnapshot
-} from './utils/firebase/firebase.utils'
+import { createUserDocumentFromAuth, onAuthStateChangedListener } from './utils/firebase/firebase.utils'
 import Navigation from './routes/navigation/navigation.component'
 import Home from './routes/home/home.component'
 import Shop from './routes/shop/shop.component'
@@ -16,15 +12,14 @@ import { useAppDispatch } from './store/hooks'
 
 const App = () => {
     const dispatch = useAppDispatch()
-
     useEffect(() => {
         const unsubscribe = onAuthStateChangedListener(async user => {
+            let userData = null
             if (user) {
-                const userSnapshot = await createUserDocumentFromAuth(user)
-                if (userSnapshot) {
-                    const currentUser = retrieveDataFromUserSnapshot(userSnapshot)
-                    dispatch(setCurrentUser(currentUser))
-                }
+                userData = await createUserDocumentFromAuth(user)
+            }
+            if (userData) {
+                dispatch(setCurrentUser(userData))
             }
         })
         return unsubscribe

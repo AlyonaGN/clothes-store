@@ -23,6 +23,7 @@ import {
     QueryDocumentSnapshot
 } from 'firebase/firestore'
 import { Category } from '../../store/categories/categoriesSlice'
+import { User } from '../../store/user/userSlice'
 
 const firebaseConfig = {
     apiKey: 'AIzaSyAM1_X7HGd9skEZclFgitLNlSpq3IfR1xE',
@@ -71,23 +72,10 @@ type AdditionalInformation = {
     displayName?: string
 }
 
-export type UserData = {
-    createdAt: { seconds: number; nanoseconds: number }
-    displayName: string
-    email: string
-}
-
-export const retrieveDataFromUserSnapshot = (snapshot: QueryDocumentSnapshot<UserData>) => {
-    const data = snapshot.data()
-    console.log('data', data)
-    const formatedUserData = { ...data, createdAt: data.createdAt.seconds }
-    return formatedUserData
-}
-
 export const createUserDocumentFromAuth = async (
     userAuth: UserFirebase,
     additionalInfo: AdditionalInformation = {}
-): Promise<void | QueryDocumentSnapshot<UserData>> => {
+): Promise<User | void> => {
     if (!userAuth) return
     const userDocRef = doc(db, 'users', userAuth.uid)
     const userSnapshot = await getDoc(userDocRef)
@@ -111,7 +99,19 @@ export const createUserDocumentFromAuth = async (
             }
         }
     }
-    return userSnapshot as QueryDocumentSnapshot<UserData>
+
+    let data = userSnapshot.data()
+    if (!data) return
+
+    let userData: User
+    let { displayName, email } = data
+    userData = {
+        displayName,
+        email,
+        createdAt: data.createdAt.toDate().toLocaleString()
+    }
+
+    return userData
 }
 
 export const createAuthUserWithEmailAndPassword = async (email: string, password: string) => {
