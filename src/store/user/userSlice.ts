@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export type User = {
-    createdAt: Date
-    displayName: string
-    email: string
+    readonly createdAt: Date
+    readonly displayName: string
+    readonly email: string
 }
 
 type UserSlice = {

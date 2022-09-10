@@ -11,17 +11,7 @@ import {
     User as UserFirebase,
     NextOrObserver
 } from 'firebase/auth'
-import {
-    getFirestore,
-    doc,
-    getDoc,
-    setDoc,
-    collection,
-    writeBatch,
-    query,
-    getDocs,
-    QueryDocumentSnapshot
-} from 'firebase/firestore'
+import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, query, getDocs } from 'firebase/firestore'
 import { Category } from '../../store/categories/categoriesSlice'
 import { User } from '../../store/user/userSlice'
 
