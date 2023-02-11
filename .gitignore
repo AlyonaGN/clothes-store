@@ -11,6 +11,7 @@
 # production
 /build
 .env
+/src/gql
 
 # misc
 .DS_Store

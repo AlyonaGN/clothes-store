@@ -1,8 +1,7 @@
 import { FC } from 'react';
-import { selectCartItems } from '../../store/cart/cart.selector';
 import { addItemToCart } from '../../store/cart/cartSlice';
 import { Product } from '../../store/categories/categoriesSlice';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useAppDispatch } from '../../store/hooks';
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
 import {
   ProductCartContainer,

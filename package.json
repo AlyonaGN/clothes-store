@@ -17,6 +17,7 @@
     "dotenv": "^16.0.1",
     "firebase": "^9.6.10",
     "graphql": "^16.6.0",
+    "graphql-codegen": "^0.4.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-redux": "^8.0.2",
@@ -34,7 +35,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "compile": "graphql-codegen",
+    "watch": "graphql-codegen -w"
   },
   "eslintConfig": {
     "extends": [
@@ -55,6 +58,9 @@
     ]
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^3.0.0",
+    "@graphql-codegen/client-preset": "^2.0.0",
+    "@graphql-codegen/typescript-react-apollo": "^3.3.7",
     "@types/redux-logger": "^3.0.9",
     "@types/redux-persist": "^4.3.1",
     "@types/styled-components": "^5.1.26",

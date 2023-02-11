@@ -18,19 +18,6 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-client
-  .query({
-    query: gql`
-      query GetGategories {
-        categories {
-          id
-          title
-        }
-      }
-    `,
-  })
-  .then((result) => console.log(result));
-
 root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
