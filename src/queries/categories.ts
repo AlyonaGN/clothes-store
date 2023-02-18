@@ -1,7 +1,7 @@
-import { gql } from "@apollo/client"
+import { graphql } from "../gql"
 
 
-const GET_CATEGORIES = gql`
+const GET_CATEGORIES = graphql(/* GraphQL */`
     query getCategories {
         categories {
             title: id
@@ -12,7 +12,7 @@ const GET_CATEGORIES = gql`
                 price
             }
         }
-    }`
-
+    }
+`)
 
 export { GET_CATEGORIES }
