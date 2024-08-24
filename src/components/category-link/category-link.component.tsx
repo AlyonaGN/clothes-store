@@ -1,5 +1,6 @@
 import { FC } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { StyledLink } from './category-link.styles';
 
 type CategoryLinkProps = {
   text: string
@@ -7,5 +8,5 @@ type CategoryLinkProps = {
 
 export const CategoryLink: FC<CategoryLinkProps> = ({ text }) => {
   const location = useLocation();
-  return <Link to={`${location.pathname}/${text}`}>{text}</Link>;
+  return <StyledLink to={`${location.pathname}/${text}`}>{text.toUpperCase()}</StyledLink>;
 };
