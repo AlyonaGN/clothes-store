@@ -57,5 +57,8 @@
     "@types/redux-persist": "^4.3.1",
     "@types/styled-components": "^5.1.26",
     "prettier": "2.7.1"
+  },
+  "overrides": {
+    "redux": "^5.0.0"
   }
 }
