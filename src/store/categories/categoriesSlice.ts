@@ -9,8 +9,16 @@ export type Product = {
     imageUrl: string
 }
 
+export enum CategoryNames {
+    Hats = "Hats",
+    Jackets = "Jackets",
+    Mens = "Mens",
+    Womens = "Womens",
+    Sneakers = "Sneakers"
+}
+
 export type Category = {
-    title: string
+    title: CategoryNames
     items: Product[]
 }
 

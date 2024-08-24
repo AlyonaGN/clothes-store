@@ -9,11 +9,26 @@ import {
     signOut,
     onAuthStateChanged,
     User as UserFirebase,
-    NextOrObserver
+    NextOrObserver,
 } from 'firebase/auth'
-import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, query, getDocs } from 'firebase/firestore'
-import { Category } from '../../store/categories/categoriesSlice'
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    collection,
+    writeBatch,
+    query,
+    getDocs,
+    DocumentSnapshot,
+    orderBy,
+    where,
+    limit,
+    startAfter,
+} from 'firebase/firestore'
+import { Category, CategoryNames } from '../../store/categories/categoriesSlice'
 import { User } from '../../store/user/userSlice'
+import { categoriesCollection } from './utils'
 
 const firebaseConfig = {
     apiKey: 'AIzaSyAM1_X7HGd9skEZclFgitLNlSpq3IfR1xE',
@@ -21,14 +36,14 @@ const firebaseConfig = {
     projectId: 'crwn-clothing-db-7bd27',
     storageBucket: 'crwn-clothing-db-7bd27.appspot.com',
     messagingSenderId: '525859999027',
-    appId: '1:525859999027:web:9716c6fc1e1d111f2f4246'
+    appId: '1:525859999027:web:9716c6fc1e1d111f2f4246',
 }
 
 initializeApp(firebaseConfig)
 const provider = new GoogleAuthProvider()
 
 provider.setCustomParameters({
-    prompt: 'select_account'
+    prompt: 'select_account',
 })
 export const auth = getAuth()
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider)
@@ -39,11 +54,14 @@ const db = getFirestore()
 export type ObjectToAdd = {
     title: string
 }
-export const addCollectionAndDocuments = async <T extends ObjectToAdd>(collectionKey: string, objectsToAdd: T[]) => {
+export const addCollectionAndDocuments = async <T extends ObjectToAdd>(
+    collectionKey: string,
+    objectsToAdd: T[]
+) => {
     const collectionRef = collection(db, collectionKey)
     const batch = writeBatch(db)
 
-    objectsToAdd.forEach(object => {
+    objectsToAdd.forEach((object) => {
         const docRef = doc(collectionRef, object.title.toLowerCase())
         batch.set(docRef, object)
     })
@@ -55,7 +73,39 @@ export const getCollectionsAndDocuments = async () => {
     const collectionRef = collection(db, 'categories')
     const q = query(collectionRef)
     const querySnapshot = await getDocs(q)
-    return querySnapshot.docs.map(docSnapshot => docSnapshot.data() as Category)
+    return querySnapshot.docs.map(
+        (docSnapshot) => docSnapshot.data() as Category
+    )
+}
+
+export const getProductsByCategory = async (
+    category: CategoryNames,
+    itemsPerPage: number = 3,
+    cursor: Maybe<DocumentSnapshot>
+) => {
+    const collectionRef = collection(db, categoriesCollection)
+    const order = orderBy('name', 'desc')
+
+    const operator = '=='
+
+    // create default constraints
+    const constraints = [
+        where('title', operator, category),
+        order,
+        limit(itemsPerPage),
+    ]
+
+    // if cursor is not undefined (e.g. not initial query)
+    // we pass it as a constraint
+    if (cursor) {
+        constraints.push(startAfter(cursor))
+    }
+
+    const q = query(collectionRef)
+    const querySnapshot = await getDocs(q)
+    return querySnapshot.docs.map(
+        (docSnapshot) => docSnapshot.data() as Category
+    )
 }
 
 type AdditionalInformation = {
@@ -79,11 +129,13 @@ export const createUserDocumentFromAuth = async (
                 displayName,
                 email,
                 createdAt,
-                ...additionalInfo
+                ...additionalInfo,
             })
         } catch (e: any) {
             if (e.code === 'auth/email-already-in-use') {
-                alert('cannot create user: user with this email is already registered')
+                alert(
+                    'cannot create user: user with this email is already registered'
+                )
             } else {
                 console.log('error creating a user:', e.message)
             }
@@ -98,20 +150,28 @@ export const createUserDocumentFromAuth = async (
     userData = {
         displayName,
         email,
-        createdAt: data.createdAt.toDate().toLocaleString()
+        createdAt: data.createdAt.toDate().toLocaleString(),
     }
 
     return userData
 }
 
-export const createAuthUserWithEmailAndPassword = async (email: string, password: string) => {
+export const createAuthUserWithEmailAndPassword = async (
+    email: string,
+    password: string
+) => {
     if (!email || !password) return
     return await createUserWithEmailAndPassword(auth, email, password)
 }
 
-export const onAuthStateChangedListener = (callback: NextOrObserver<UserFirebase>) => onAuthStateChanged(auth, callback)
+export const onAuthStateChangedListener = (
+    callback: NextOrObserver<UserFirebase>
+) => onAuthStateChanged(auth, callback)
 
-export const signInWithEmailAndPasswordFirebase = (email: string, password: string) => {
+export const signInWithEmailAndPasswordFirebase = (
+    email: string,
+    password: string
+) => {
     if (!email || !password) return
     return signInWithEmailAndPassword(auth, email, password)
 }
