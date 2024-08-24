@@ -9,7 +9,6 @@ import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '
 import Button from '../button/button.component'
 import { FormInput } from '../form-input/form-input.component'
 import { SignUpContainer, SignUpTitle } from './sign-up-form.styles'
-import './sign-up-form.styles.tsx'
 
 const defaultFields = {
     email: '',
@@ -18,7 +17,6 @@ const defaultFields = {
     confirmPassword: ''
 }
 const SignUpForm = () => {
-    const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const [formFields, setFormFields] = useState(defaultFields)
 
@@ -46,7 +44,7 @@ const SignUpForm = () => {
                     dispatch(setCurrentUser(userData))
                 }
             }
-            navigate(BASE_ROUTES.MAIN)
+            alert('You successfully signed up. Now you can log in using your credentials!')
             resetFormFields()
         } catch (error) {
             if ((error as AuthError).code === AuthErrorCodes.EMAIL_EXISTS) {
