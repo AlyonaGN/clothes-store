@@ -1,6 +1,4 @@
-import { Navigate } from 'react-router-dom'
 import styled from 'styled-components'
-import Button from '../../components/button/button.component'
 
 export const CheckoutContainer = styled.div`
     width: 55%;

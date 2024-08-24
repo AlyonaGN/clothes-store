@@ -23,6 +23,8 @@ const App = () => {
             }
         })
         return unsubscribe
+    // ignoring the eslint rule to make it clear that the useEffect should be run on mount and clean up on unmount    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
