@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { getCollectionsAndDocuments } from '../../utils/firebase/firebase.utils'
+import { getCollectionsAndDocuments } from '../../services/firebase/firebase.utils'
 import { Category } from './types'
 
 const CATEGORIES_THUNKS = {

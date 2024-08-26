@@ -1,11 +1,12 @@
 import { AuthError, AuthErrorCodes } from 'firebase/auth'
 import { FormEventHandler } from 'react'
 import { ChangeEventHandler, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { BASE_ROUTES } from '../../routes/routes'
 import { useAppDispatch } from '../../store/hooks'
 import { setCurrentUser } from '../../store/user/userSlice'
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils'
+import {
+    createAuthUserWithEmailAndPassword,
+    createUserDocumentFromAuth,
+} from '../../services/firebase/firebase.utils'
 import Button from '../button/button.component'
 import { FormInput } from '../form-input/form-input.component'
 import { SignUpContainer, SignUpTitle } from './sign-up-form.styles'
@@ -14,18 +15,18 @@ const defaultFields = {
     email: '',
     displayName: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
 }
 const SignUpForm = () => {
     const dispatch = useAppDispatch()
     const [formFields, setFormFields] = useState(defaultFields)
 
     const { email, displayName, password, confirmPassword } = formFields
-    const onInputChange: ChangeEventHandler<HTMLInputElement> = e => {
+    const onInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         const { name, value } = e.target
         setFormFields({ ...formFields, [name]: value })
     }
-    const handleSubmit: FormEventHandler<HTMLFormElement> = async e => {
+    const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault()
 
         if (password !== confirmPassword) {
@@ -34,17 +35,25 @@ const SignUpForm = () => {
         }
 
         try {
-            const userCredential = await createAuthUserWithEmailAndPassword(email, password)
+            const userCredential = await createAuthUserWithEmailAndPassword(
+                email,
+                password
+            )
 
             if (userCredential) {
-                const userData = await createUserDocumentFromAuth(userCredential.user, {
-                    displayName
-                })
+                const userData = await createUserDocumentFromAuth(
+                    userCredential.user,
+                    {
+                        displayName,
+                    }
+                )
                 if (userData) {
                     dispatch(setCurrentUser(userData))
                 }
             }
-            alert('You successfully signed up. Now you can log in using your credentials!')
+            alert(
+                'You successfully signed up. Now you can log in using your credentials!'
+            )
             resetFormFields()
         } catch (error) {
             if ((error as AuthError).code === AuthErrorCodes.EMAIL_EXISTS) {
@@ -73,7 +82,14 @@ const SignUpForm = () => {
                     required
                 />
 
-                <FormInput label="Email" type="email" onChange={onInputChange} value={email} name="email" required />
+                <FormInput
+                    label="Email"
+                    type="email"
+                    onChange={onInputChange}
+                    value={email}
+                    name="email"
+                    required
+                />
 
                 <FormInput
                     label="Password"

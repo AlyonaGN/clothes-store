@@ -6,7 +6,7 @@ import {
     signInWithEmailAndPasswordFirebase,
     signInWithGooglePopup,
     createUserDocumentFromAuth,
-} from '../../utils/firebase/firebase.utils'
+} from '../../services/firebase/firebase.utils'
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component'
 import { FormInput } from '../form-input/form-input.component'
 import {

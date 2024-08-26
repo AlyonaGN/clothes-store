@@ -22,7 +22,7 @@ function useFetchProductsByCategory({
 
     const order = orderBy('name', 'desc')
 
-    const path = `organizationId`
+    const path = categoriesCollection
     const operator = '=='
 
     // create default constraints
@@ -32,9 +32,9 @@ function useFetchProductsByCategory({
         limit(itemsPerPage),
     ]
 
-    if (cursor) {
+    /*   if (cursor) {
         constraints.push(startAfter(cursor))
-    }
+    } */
 
     const collectionRef = collection(
         firestore,

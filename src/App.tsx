@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import {
     createUserDocumentFromAuth,
     onAuthStateChangedListener,
-} from './utils/firebase/firebase.utils'
+} from './services/firebase/firebase.utils'
 import Navigation from './routes/navigation/navigation.component'
 import Home from './routes/home/home.component'
 import Shop from './routes/shop/shop.component'
@@ -29,8 +29,6 @@ const App = () => {
         // ignoring the eslint rule to make it clear that the useEffect should be run on mount and clean up on unmount
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-    /*   const res = useFetchProductsByCategory({ category: CategoryNames.Sneakers }) */
 
     return (
         <Routes>

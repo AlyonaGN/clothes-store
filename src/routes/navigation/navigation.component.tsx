@@ -1,9 +1,14 @@
 import { Outlet } from 'react-router-dom'
 import { ReactComponent as CrownLogo } from '../../assets/crown.svg'
-import { signOutUser } from '../../utils/firebase/firebase.utils'
+import { signOutUser } from '../../services/firebase/firebase.utils'
 import { CartDropdown } from '../../components/cart-dropdown/cart-dropdown.component'
 import { CartIcon } from '../../components/cart-icon/cart-icon.component'
-import { LogoContainer, NavigationContainer, NavLink, NavLinksContainer } from './navigation.styles'
+import {
+    LogoContainer,
+    NavigationContainer,
+    NavLink,
+    NavLinksContainer,
+} from './navigation.styles'
 import { selectCurrentUser } from '../../store/user/user.selector'
 import { selectIsCartOpen } from '../../store/cart/cart.selector'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'

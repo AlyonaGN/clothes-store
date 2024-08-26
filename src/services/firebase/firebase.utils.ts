@@ -36,7 +36,7 @@ export interface GetProductsByCategoryPayload {
     cursor?: Maybe<DocumentSnapshot>
 }
 
-const firebaseConfig = {
+export const firebaseConfig = {
     apiKey: 'AIzaSyAM1_X7HGd9skEZclFgitLNlSpq3IfR1xE',
     authDomain: 'crwn-clothing-db-7bd27.firebaseapp.com',
     projectId: 'crwn-clothing-db-7bd27',
@@ -78,36 +78,6 @@ export const addCollectionAndDocuments = async <T extends ObjectToAdd>(
 export const getCollectionsAndDocuments = async () => {
     const collectionRef = collection(db, 'categories')
     const q = query(collectionRef)
-    const querySnapshot = await getDocs(q)
-    return querySnapshot.docs.map(
-        (docSnapshot) => docSnapshot.data() as Category
-    )
-}
-
-export const getProductsByCategory = async ({
-    category,
-    itemsPerPage = 3,
-    cursor,
-}: GetProductsByCategoryPayload) => {
-    const collectionRef = collection(db, categoriesCollection)
-    const order = orderBy('name', 'desc')
-
-    const operator = '=='
-
-    // create default constraints
-    const constraints = [
-        where('title', operator, category),
-        order,
-        limit(itemsPerPage),
-    ]
-
-    // if cursor is not undefined (e.g. not initial query)
-    // we pass it as a constraint
-    if (cursor) {
-        constraints.push(startAfter(cursor))
-    }
-
-    const q = query(collectionRef, ...constraints)
     const querySnapshot = await getDocs(q)
     return querySnapshot.docs.map(
         (docSnapshot) => docSnapshot.data() as Category
