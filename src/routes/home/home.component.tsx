@@ -1,9 +1,9 @@
-import { CategoryPreviewLink } from '../../components/category-preview-link/category-preview-link.component'
+import { CategoryPreviewLinks } from '../../components/category-preview-link/category-preview-link.component'
 
 const Home = () => {
     return (
         <div className="categories-container">
-            <CategoryPreviewLink />
+            <CategoryPreviewLinks />
         </div>
     )
 }

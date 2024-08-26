@@ -2,7 +2,7 @@ import { CategoryPreviewItem } from '../category-preview-item/category-preview-i
 import { PreviewContainer } from './category-preview-link.styles'
 import { categories } from './utils'
 
-export const CategoryPreviewLink = () => {
+export const CategoryPreviewLinks = () => {
     return (
         <PreviewContainer>
             {categories.map((category) => (

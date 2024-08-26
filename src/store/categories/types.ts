@@ -33,7 +33,7 @@ export type CategoriesMap = {
 
 export type CategoryPreview = {
     id: Key
-    title: string
+    title: CategoryNames
     imageUrl: string
     route: string
 }
