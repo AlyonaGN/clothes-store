@@ -1,9 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import {
-    getCollectionsAndDocuments,
-    getProductsByCategory,
-} from '../../utils/firebase/firebase.utils'
-import { Category, CategoryNames } from './categoriesSlice'
+import { getCollectionsAndDocuments } from '../../utils/firebase/firebase.utils'
+import { Category } from './types'
 
 const CATEGORIES_THUNKS = {
     fetchCategories: 'categories/fetch',
@@ -15,11 +12,13 @@ export const fetchCategories = createAsyncThunk<Category[]>(
     async () => getCollectionsAndDocuments()
 )
 
-export const fetchCategory = createAsyncThunk<Category[]>(
-    CATEGORIES_THUNKS.fetchCategory,
-    async (
-        category: CategoryNames,
-        itemsPerPage: number,
-        cursor: Maybe<DocumentSnapshot>
-    ) => getProductsByCategory(category, itemsPerPage, cursor)
+/* export const fetchCategory = createAsyncThunk<
+    Category,
+    GetProductsByCategoryPayload,
+    {
+        rejectValue: Error
+    }
+>(CATEGORIES_THUNKS.fetchCategory, async ({ category, itemsPerPage, cursor }) =>
+    getProductsByCategory(category, itemsPerPage, cursor)
 )
+ */

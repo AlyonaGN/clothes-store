@@ -26,9 +26,15 @@ import {
     limit,
     startAfter,
 } from 'firebase/firestore'
-import { Category, CategoryNames } from '../../store/categories/categoriesSlice'
 import { User } from '../../store/user/userSlice'
 import { categoriesCollection } from './utils'
+import { Category, CategoryNames } from '../../store/categories/types'
+
+export interface GetProductsByCategoryPayload {
+    category: CategoryNames
+    itemsPerPage?: number
+    cursor?: Maybe<DocumentSnapshot>
+}
 
 const firebaseConfig = {
     apiKey: 'AIzaSyAM1_X7HGd9skEZclFgitLNlSpq3IfR1xE',
@@ -78,11 +84,11 @@ export const getCollectionsAndDocuments = async () => {
     )
 }
 
-export const getProductsByCategory = async (
-    category: CategoryNames,
-    itemsPerPage: number = 3,
-    cursor: Maybe<DocumentSnapshot>
-) => {
+export const getProductsByCategory = async ({
+    category,
+    itemsPerPage = 3,
+    cursor,
+}: GetProductsByCategoryPayload) => {
     const collectionRef = collection(db, categoriesCollection)
     const order = orderBy('name', 'desc')
 
@@ -101,7 +107,7 @@ export const getProductsByCategory = async (
         constraints.push(startAfter(cursor))
     }
 
-    const q = query(collectionRef)
+    const q = query(collectionRef, ...constraints)
     const querySnapshot = await getDocs(q)
     return querySnapshot.docs.map(
         (docSnapshot) => docSnapshot.data() as Category

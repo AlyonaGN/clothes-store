@@ -5,23 +5,26 @@ import { BASE_ROUTES } from '../../routes/routes'
 import {
     signInWithEmailAndPasswordFirebase,
     signInWithGooglePopup,
-    createUserDocumentFromAuth
+    createUserDocumentFromAuth,
 } from '../../utils/firebase/firebase.utils'
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component'
 import { FormInput } from '../form-input/form-input.component'
-import { ButtonsContainer, SignInContainer, SignInTitle } from './sign-in-form.styles'
-import './sign-in-form.styles.tsx'
+import {
+    ButtonsContainer,
+    SignInContainer,
+    SignInTitle,
+} from './sign-in-form.styles'
 
 const defaultFields = {
     email: '',
-    password: ''
+    password: '',
 }
 const SignInForm = () => {
     const [formFields, setFormFields] = useState(defaultFields)
     const { email, password } = formFields
     const navigate = useNavigate()
 
-    const onInputChange: ChangeEventHandler<HTMLInputElement> = e => {
+    const onInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         const { name, value } = e.target
         setFormFields({ ...formFields, [name]: value })
     }
@@ -30,7 +33,9 @@ const SignInForm = () => {
         await createUserDocumentFromAuth(user)
         navigate(BASE_ROUTES.MAIN)
     }
-    const handleSignInWithLoginAndPassword: FormEventHandler<HTMLFormElement> = async e => {
+    const handleSignInWithLoginAndPassword: FormEventHandler<
+        HTMLFormElement
+    > = async (e) => {
         e.preventDefault()
         try {
             await signInWithEmailAndPasswordFirebase(email, password)
@@ -61,7 +66,14 @@ const SignInForm = () => {
             <SignInTitle>I already have an account</SignInTitle>
             <span>Sign up with your email and password</span>
             <form onSubmit={handleSignInWithLoginAndPassword}>
-                <FormInput label="Email" type="email" onChange={onInputChange} value={email} name="email" required />
+                <FormInput
+                    label="Email"
+                    type="email"
+                    onChange={onInputChange}
+                    value={email}
+                    name="email"
+                    required
+                />
 
                 <FormInput
                     label="Password"
@@ -73,7 +85,11 @@ const SignInForm = () => {
                 />
                 <ButtonsContainer className="buttons-container">
                     <Button type="submit">Sign In</Button>
-                    <Button type="button" onClick={handleSignInWithGoogle} buttonType={BUTTON_TYPE_CLASSES.google}>
+                    <Button
+                        type="button"
+                        onClick={handleSignInWithGoogle}
+                        buttonType={BUTTON_TYPE_CLASSES.google}
+                    >
                         Google Sign In
                     </Button>
                 </ButtonsContainer>

@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { createUserDocumentFromAuth, onAuthStateChangedListener } from './utils/firebase/firebase.utils'
+import {
+    createUserDocumentFromAuth,
+    onAuthStateChangedListener,
+} from './utils/firebase/firebase.utils'
 import Navigation from './routes/navigation/navigation.component'
 import Home from './routes/home/home.component'
 import Shop from './routes/shop/shop.component'
@@ -13,7 +16,7 @@ import { useAppDispatch } from './store/hooks'
 const App = () => {
     const dispatch = useAppDispatch()
     useEffect(() => {
-        const unsubscribe = onAuthStateChangedListener(async user => {
+        const unsubscribe = onAuthStateChangedListener(async (user) => {
             let userData = null
             if (user) {
                 userData = await createUserDocumentFromAuth(user)
@@ -23,9 +26,11 @@ const App = () => {
             }
         })
         return unsubscribe
-    // ignoring the eslint rule to make it clear that the useEffect should be run on mount and clean up on unmount    
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // ignoring the eslint rule to make it clear that the useEffect should be run on mount and clean up on unmount
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    /*   const res = useFetchProductsByCategory({ category: CategoryNames.Sneakers }) */
 
     return (
         <Routes>
