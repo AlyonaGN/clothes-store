@@ -3,38 +3,21 @@ import { useFirestore, useFirestoreCollection } from 'reactfire'
 import {
     collection,
     CollectionReference,
-    limit,
-    orderBy,
-    startAfter,
     query,
     where,
 } from 'firebase/firestore'
 import { GetProductsByCategoryPayload } from './firebase.utils'
-import { categoriesCollection } from './utils'
 import { Category } from '../../store/categories/types'
+import { categoriesCollection } from './utils'
 
 function useFetchProductsByCategory({
-    cursor,
-    itemsPerPage = 3,
     category,
 }: GetProductsByCategoryPayload) {
     const firestore = useFirestore()
 
-    const order = orderBy('name', 'desc')
-
-    const path = categoriesCollection
     const operator = '=='
 
-    // create default constraints
-    const constraints = [
-        where(path, operator, category),
-        order,
-        limit(itemsPerPage),
-    ]
-
-    /*   if (cursor) {
-        constraints.push(startAfter(cursor))
-    } */
+    const constraints = [where('title', operator, category)]
 
     const collectionRef = collection(
         firestore,

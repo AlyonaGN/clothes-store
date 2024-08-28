@@ -3,8 +3,10 @@ import useFetchProductsByCategory from '../../services/firebase/useFetchProducts
 import { CategoryNames } from '../../store/categories/types'
 
 const Home = () => {
-    const res = useFetchProductsByCategory({ category: CategoryNames.Sneakers })
-    console.log('res', res)
+    const { data, status } = useFetchProductsByCategory({
+        category: CategoryNames.Sneakers,
+    })
+    console.log('res', data?.docs?.map((doc) => doc.data()) ?? [], status)
     return (
         <div className="categories-container">
             <CategoryPreviewLinks />
