@@ -44,14 +44,8 @@ export const PreviewItemContainer = styled.div`
     align-items: center;
     justify-content: center;
     border: 1px solid black;
-    margin: 0 7.5px 15px;
     overflow: hidden;
-    &:first-child {
-        margin-right: 7.5px;
-    }
-    &:last-child {
-        margin-left: 7.5px;
-    }
+
     &:hover {
         cursor: pointer;
         ${BackgroundImage} {

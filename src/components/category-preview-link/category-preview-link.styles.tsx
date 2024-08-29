@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
 export const PreviewContainer = styled.div`
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 10px;
 `
