@@ -21,13 +21,8 @@ import {
     query,
     getDocs,
     DocumentSnapshot,
-    orderBy,
-    where,
-    limit,
-    startAfter,
 } from 'firebase/firestore'
 import { User } from '../../store/user/userSlice'
-import { categoriesCollection } from './utils'
 import { Category, CategoryNames } from '../../store/categories/types'
 
 export interface GetProductsByCategoryPayload {

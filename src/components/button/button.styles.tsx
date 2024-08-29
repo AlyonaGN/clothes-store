@@ -1,55 +1,64 @@
-import styled from 'styled-components';
-import { SpinnerContainer } from "../spinner/spinner.styles";
+import styled from 'styled-components'
+import { SpinnerContainer } from '../spinner/spinner.styles'
+import { breakpoints } from '../../styles-utils'
 
 export const BaseButton = styled.button`
-  min-width: 165px;
-  width: auto;
-  height: 50px;
-  letter-spacing: 0.5px;
-  line-height: 50px;
-  padding: 0 35px 0 35px;
-  font-size: 13px;
-  background-color: black;
-  color: white;
-  text-transform: uppercase;
-  font-family: -apple-system, sans-serif;
-  font-weight: bolder;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    min-width: 130px;
+    width: 85%;
+    max-width: 350px;
+    height: 50px;
+    letter-spacing: 0.5px;
+    line-height: 50px;
+    padding: 3px 20px;
+    font-size: 13px;
+    background-color: black;
+    color: white;
+    text-transform: uppercase;
+    font-family: -apple-system, sans-serif;
+    font-weight: bolder;
+    font-size: 18px;
+    line-height: 1.2;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  &:hover {
+    &:hover {
+        background-color: white;
+        color: black;
+        border: 1px solid black;
+    }
+
+    @media (max-width: ${breakpoints.smallerDesktop}) {
+        font-size: 13px;
+        padding: 3px 5px;
+    }
+`
+
+export const GoogleSigninButton = styled(BaseButton)`
+    background-color: #4285f4;
+    color: white;
+
+    &:hover {
+        background-color: #357ae8;
+        border: none;
+    }
+`
+
+export const InvertedButton = styled(BaseButton)`
     background-color: white;
     color: black;
     border: 1px solid black;
-  }
-`;
 
-export const GoogleSigninButton = styled(BaseButton)`
-  background-color: #4285f4;
-  color: white;
-
-  &:hover {
-    background-color: #357ae8;
-    border: none;
-  }
-`;
-
-export const InvertedButton = styled(BaseButton)`
-  background-color: white;
-  color: black;
-  border: 1px solid black;
-
-  &:hover {
-    background-color: black;
-    color: white;
-    border: none;
-  }
-`;
+    &:hover {
+        background-color: black;
+        color: white;
+        border: none;
+    }
+`
 
 export const ButtonSpinner = styled(SpinnerContainer)`
-  width: 30px;
-  height: 30px;
-`;
+    width: 30px;
+    height: 30px;
+`
