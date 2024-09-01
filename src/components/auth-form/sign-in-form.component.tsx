@@ -9,11 +9,7 @@ import {
 } from '../../services/firebase/firebase.utils'
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component'
 import { FormInput } from '../form-input/form-input.component'
-import {
-    ButtonsContainer,
-    SignInContainer,
-    SignInTitle,
-} from './sign-in-form.styles'
+import { AuthContainer, AuthTitle, ButtonsContainer } from './auth-form.styles'
 
 const defaultFields = {
     email: '',
@@ -62,8 +58,8 @@ const SignInForm = () => {
         setFormFields(defaultFields)
     }
     return (
-        <SignInContainer className="sign-in-container">
-            <SignInTitle>I already have an account</SignInTitle>
+        <AuthContainer className="sign-in-container">
+            <AuthTitle>I already have an account</AuthTitle>
             <span>Sign up with your email and password</span>
             <form onSubmit={handleSignInWithLoginAndPassword}>
                 <FormInput
@@ -94,7 +90,7 @@ const SignInForm = () => {
                     </Button>
                 </ButtonsContainer>
             </form>
-        </SignInContainer>
+        </AuthContainer>
     )
 }
 

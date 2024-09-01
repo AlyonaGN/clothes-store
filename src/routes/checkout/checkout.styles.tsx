@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { breakpoints } from '../../styles-utils'
 
 export const CheckoutContainer = styled.div`
     width: 55%;
@@ -7,6 +8,10 @@ export const CheckoutContainer = styled.div`
     flex-direction: column;
     align-items: center;
     margin: 50px auto 0;
+
+    @media (max-width: ${breakpoints.tablet}) {
+        width: 100%;
+    }
 `
 
 export const CheckoutHeader = styled.div`
@@ -18,10 +23,12 @@ export const CheckoutHeader = styled.div`
 `
 
 export const HeaderBlock = styled.div`
-    text-transform: capitalize;
-    width: 23%;
+    width: 20%;
     &:last-child {
-        width: 8%;
+        width: 15%;
+    }
+    @media (max-width: ${breakpoints.tablet}) {
+        font-size: 12px;
     }
 `
 
